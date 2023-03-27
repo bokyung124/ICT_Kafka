@@ -1,0 +1,46 @@
+<config>
+	<!-- log setting -->
+	<common>
+		<logger path="./kafka_adapter.log" file_size="10485760" count="10" level="info" data_dump="0" console_log="1"/>
+	</common>
+	<!-- connection setting -->
+	<connection>
+		<db host="legacydb.c0mdscslnpli.ap-northeast-2.rds.amazonaws.com"
+			user="admin"
+			password="ictmentoring1!"
+			database="testdb"
+			charset="utf8mb4"
+			cursorclass="pymysql.cursors.DictCursor"
+		/>
+		<kafka bootstrap.servers="52.79.77.151:9092,52.79.77.151:9093,52.79.77.151:9094"
+			transactional.id="TID"
+			transaction.timeout.ms="60000"
+			client.id="kafka_wrapper"
+			acks="all"
+			batch.size="1000000"
+			batch.num.messages="10000"
+			connections.max.idle_ms="540000"
+			request.timeout.ms="30000"
+			enable.idempotence="true"
+			queue.buffering.max.messages="10000000"
+			queue.buffering.max.kbytes="1048576"
+			queue.buffering.max.ms="5"
+			message.send.max.retries="2147483647"
+			message.timeout.ms="60000"
+			partitioner="consistent_random"
+			compression.codec="none"
+			compression.type="none"
+			compression.level="-1"
+			internal.commit.timeout="60000"
+			internal.transaction.timeout="60000"
+		/>
+	</connection>
+	<!-- interface setting -->
+	<interfaces>
+
+		<interface type="DBGET" intf_id="CUSTOMER" in="customer.sql" out="test_topic" process_type="realtime" poll_time="1000" attr1="http://127.0.0.1:8000/monitor_info">
+			<columns>
+			</columns>
+		</interface>
+	</interfaces>
+</config>
