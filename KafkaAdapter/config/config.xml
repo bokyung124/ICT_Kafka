@@ -38,7 +38,7 @@
 	<!-- interface setting -->
 	<interfaces>
 
-		<interface type="DBGET" intf_id="CUSTOMER" in="customer.sql" out="test_topic" process_type="realtime" poll_time="1000" attr1="http://127.0.0.1:8000/monitor_info">
+		<interface type="DBGET" intf_id="CUSTOMER" in="customer.sql" out="test_topic" process_type="realtime" poll_time="100">
 			<columns>
 			</columns>
 		</interface>

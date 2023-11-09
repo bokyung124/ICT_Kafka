@@ -1,0 +1,18 @@
+<config>
+	<!-- log setting -->
+	<common>
+		<logger path="./server.log" file_size="10485760" count="10" level="info" data_dump="0" console_log="1"/>
+		<server ip="0.0.0.0" port="8000" />
+	</common>
+	<!-- connection setting -->
+	<connection>
+		<db host="legacydb.c0mdscslnpli.ap-northeast-2.rds.amazonaws.com"
+			user="admin"
+			password="ictmentoring1!"
+			database="monitordb"
+			charset="utf8mb4"
+			cursorclass="pymysql.cursors.DictCursor"
+		/>
+	</connection>
+	<interfaces/>
+</config>

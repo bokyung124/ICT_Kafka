@@ -83,10 +83,6 @@ class MySQLWrapper:
             sql = "INSERT INTO %s(%s) VALUES(%s)" % (table, cols, params)
             cursor = conn.cursor()
             try:
-                #truncate_sql = "truncate table %s" % table
-                #self._logger.info(f"[{myfunc}] SQL:{truncate_sql}")
-                #cursor.execute(truncate_sql)
-                #self._logger.info(f"[{myfunc}] Table truncate success. table({table})")
                 if option == "delete":
                     delete_sql = "delete from %s" % table
                     self._logger.info(f"[{myfunc}] SQL:{delete_sql}")

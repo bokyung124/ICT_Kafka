@@ -5,8 +5,7 @@ import copy
 import os
 import time
 import datetime
-import socket
-from common import ConfigManager, MySQLWrapper, KafkaWrapper, CommonUtil, RestClient
+from common import ConfigManager, MySQLWrapper, KafkaWrapper, RestClient, CommonUtil
 
 class InterfaceProcess:
 
@@ -24,26 +23,8 @@ class InterfaceProcess:
         self._kafka_wrapper.set_logger(self._logger)
         self._interface_list = self._config_manager.interface_list
 
+        self._rest_client = RestClient.RestClient()
         self._common_util = CommonUtil.CommonUtil()
-
-    def send_monitor(self, lst, status, error_message):
-        try:
-            myfunc = sys._getframe().f_code.co_name
-            rest_client = RestClient.RestClient()
-            monitor_info = {}
-            monitor_info['id'] = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
-            monitor_info['intf_id'] = lst.intf_id
-            monitor_info['intf_name'] = 'DB TO KAFKA'
-            monitor_info['host_id'] = socket.gethostname()
-            monitor_info['process_dt'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            monitor_info['status'] = status
-            monitor_info['error_message'] = error_message
-
-            response = rest_client.restapi_post(lst.attr1, monitor_info)
-
-        except Exception as err:
-            self._logger.error(f"[{myfunc}] send_monitor error. err: ({err}), interface id:{lst.intf_id})")
-            pass
 
     def data_get(self):
         try:
@@ -75,15 +56,14 @@ class InterfaceProcess:
                             self._mysql_wrapper.db_execute(post_sql)
                             self._kafka_wrapper.kafka_commit()
                             self._mysql_wrapper.db_commit()
-
-                            self.send_monitor(lst, '00', '')
                         else:
-                            self._logger.info(f"[{myfunc}] DBGET Empty. interface id:{lst.intf_id}.")
+                            self._logger.debug(f"[{myfunc}] DBGET Empty. interface id:{lst.intf_id}.")
                             self._mysql_wrapper.db_commit()
-
                             if lst.process_type == "realtime":
                                 time.sleep(lst.poll_time / 1000)
 
+                        restclient = RestClient.RestClient()
+                        restclient.restapi_post_normal()
                         if lst.process_type == "realtime":
                             pass
                         else:
@@ -96,6 +76,5 @@ class InterfaceProcess:
             self._kafka_wrapper.kafka_rollback()
             self._mysql_wrapper.db_rollback()
             self._logger.error(f"[{myfunc}] data_get error. err: ({err}), interface id:{lst.intf_id})")
-            self.send_monitor(lst, '99', err)
             raise
 

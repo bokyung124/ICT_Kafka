@@ -1,4 +1,4 @@
-# pip install random_string pymysql confluent_kafka pandas requests
+# pip install pytz random_string pymysql confluent_kafka pandas requests
 from common import CommonUtil
 import InterfaceProcess
 
