@@ -34,6 +34,7 @@
 			internal.commit.timeout="60000"
 			internal.transaction.timeout="60000"
 		/>
+		<monitor url="http://localhost:8000/monitor_info/"/>
 	</connection>
 	<!-- interface setting -->
 	<interfaces>
